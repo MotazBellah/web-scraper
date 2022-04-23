@@ -4,7 +4,13 @@ const express = require('express')
 
 const app = express()
 
-axios("https://www.theguardian.com/uk-news")
+app.get('/', function (req, res) {
+  res.json('Web Scrapper')
+})
+
+app.get('/results', function (req, res) {
+
+    axios("https://www.theguardian.com/uk-news")
     .then(response => {
         const html = response.data
         const $ = cheerio.load(html)
@@ -20,10 +26,12 @@ axios("https://www.theguardian.com/uk-news")
            })
         })
 
-        console.log(articles)
-    })
-// app.get('/', function (req, res) {
-//   res.send('Hello World')
-// })
+        res.json(articles)
+        
+    }).catch(err => console.log(err))
+
+  })
+
+
 
 app.listen(3000, () => console.log("server running..."))
